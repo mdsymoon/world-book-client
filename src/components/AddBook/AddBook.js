@@ -1,13 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const AddBook = () => {
+  const [file, setFile] = useState(null);
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+
+  const onSubmit = (data) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("name", data.name);
+    formData.append("price", data.price);
+    formData.append("writer", data.writer);
+
+    fetch(`http://localhost:4000/addBook`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        reset();
+      });
+  };
+
   return (
     <div className="">
       <h1 className="text-2xl md:text-3xl lg:text-4xl text-center my-10 font-bold">
@@ -24,20 +43,29 @@ const AddBook = () => {
           {errors.name && <span className="mb-2">Book name is required</span>}
           <br />
           <input
-            placeholder="Enter Book Category"
-            {...register("category", { required: true })}
+            placeholder="Enter Book writer"
+            {...register("writer", { required: true })}
             className="border-2 border-black mt-3 w-80 md:w-96 p-2"
           />
           <br />
           {errors.category && <span>Book category is required</span>}
           <br />
           <input
-            type="file"
-            {...register("image", { required: true })}
-            className="mt-3"
+            placeholder="Enter Book Price"
+            {...register("price", { required: true })}
+            className="border-2 border-black mt-3 w-80 md:w-96 p-2"
           />
           <br />
-          {errors.image && <span>Book image is required</span>}
+          {errors.price && <span>Book price is required</span>}
+          <br />
+          <input
+            type="file"
+            {...register("img", { required: true })}
+            className="mt-3"
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+          <br />
+          {errors.img && <span>Book image is required</span>}
           <br />
 
           <button
