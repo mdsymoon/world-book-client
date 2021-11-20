@@ -4,20 +4,20 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  TextField,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addBooks, getBookList } from "../../redux/BookList/BookListSlice";
+import { addFavorite } from "../../redux/FavoriteList/FavoriteSlice";
 
 const BookList = () => {
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const bookList = useSelector(getBookList);
-
   const [menuItem, setMenuItem] = useState(bookList);
   const [buttons, setButtons] = useState([]);
-  console.log(buttons);
 
   const filter = (button) => {
     if (button === "All") {
@@ -33,7 +33,10 @@ const BookList = () => {
       .then((res) => res.json())
       .then((data) => {
         dispatch(addBooks(data));
-        const allWriter = ["All", ...new Set(data.map((item) => item.writer))];
+        const allWriter = [
+          "All",
+          ...new Set(data.map((item) => item.writer, "All")),
+        ];
         setButtons(allWriter);
         setMenuItem(data);
       });
@@ -41,23 +44,27 @@ const BookList = () => {
 
   return (
     <main className="container mx-auto">
-      <div className="flex justify-center">
-        <input
-          type="text"
-          placeholder="Search "
-          className="border-2 border-black w-80 md:w-96 p-2 my-10"
+      <div className="flex justify-center my-10">
+        <TextField
+          label="Search"
+          InputProps={{
+            type: "search",
+          }}
           onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-80 md:w-96 my-10"
         />
       </div>
-      <div className="container grid grid-cols-2 md:grid-cols-4  gap-5 justify-items-center">
-        {buttons.map((item) => (
-          <Button
-            variant="contained"
-            onClick={() => filter(item)}
-            className="focus:bg-gray-900 "
-          >
-            {item}
-          </Button>
+      <div className="container mx-auto px-2 flex flex-wrap justify-evenly">
+        {buttons.map((item, index) => (
+          <div className="mx-3 mb-3" key={index}>
+            <Button
+              variant="contained"
+              onClick={() => filter(item)}
+              className="focus:bg-gray-900"
+            >
+              {item}
+            </Button>
+          </div>
         ))}
       </div>
       <div className="container justify-items-center gap-6 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-10">
@@ -89,7 +96,7 @@ const BookList = () => {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small">Add To Favorite</Button>
+                  <Button size="small" onClick={() => dispatch(addFavorite(book))}>Add To Favorite</Button>
                 </CardActions>
               </Card>
             </div>
