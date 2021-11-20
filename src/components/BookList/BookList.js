@@ -35,13 +35,12 @@ const BookList = () => {
         dispatch(addBooks(data));
         const allWriter = ["All", ...new Set(data.map((item) => item.writer))];
         setButtons(allWriter);
-        setMenuItem(data)
-        // dispatch(addWriter(allWriter));
+        setMenuItem(data);
       });
   }, [dispatch]);
 
   return (
-    <main>
+    <main className="container mx-auto">
       <div className="flex justify-center">
         <input
           type="text"
@@ -50,10 +49,16 @@ const BookList = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-      <div className="flex justify-center gap-14">
-        {
-          buttons.map(item => <Button variant="contained" onClick={() =>filter(item)}>{item}</Button>)
-        }
+      <div className="container grid grid-cols-2 md:grid-cols-4  gap-5 justify-items-center">
+        {buttons.map((item) => (
+          <Button
+            variant="contained"
+            onClick={() => filter(item)}
+            className="focus:bg-gray-900 "
+          >
+            {item}
+          </Button>
+        ))}
       </div>
       <div className="container justify-items-center gap-6 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-10">
         {menuItem
