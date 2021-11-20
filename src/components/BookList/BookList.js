@@ -6,13 +6,39 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { getBookList } from "../../redux/BookList/BookListSlice";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addBooks, getBookList } from "../../redux/BookList/BookListSlice";
 
 const BookList = () => {
-  const bookList = useSelector(getBookList);
+  const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
+  const bookList = useSelector(getBookList);
+
+  const [menuItem, setMenuItem] = useState(bookList);
+  const [buttons, setButtons] = useState([]);
+  console.log(buttons);
+
+  const filter = (button) => {
+    if (button === "All") {
+      setMenuItem(bookList);
+      return;
+    }
+    const filteredData = bookList.filter((item) => item.writer === button);
+    setMenuItem(filteredData);
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:4000/bookList")
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch(addBooks(data));
+        const allWriter = ["All", ...new Set(data.map((item) => item.writer))];
+        setButtons(allWriter);
+        setMenuItem(data)
+        // dispatch(addWriter(allWriter));
+      });
+  }, [dispatch]);
 
   return (
     <main>
@@ -24,8 +50,13 @@ const BookList = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
+      <div className="flex justify-center gap-14">
+        {
+          buttons.map(item => <Button variant="contained" onClick={() =>filter(item)}>{item}</Button>)
+        }
+      </div>
       <div className="container justify-items-center gap-6 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-10">
-        {bookList
+        {menuItem
           .filter((value) => {
             if (searchTerm === "") {
               return value;
@@ -36,7 +67,7 @@ const BookList = () => {
             }
           })
           .map((book) => (
-            <div className="">
+            <div className="" key={book._id}>
               <Card sx={{ maxWidth: 300 }}>
                 <CardMedia
                   component="img"

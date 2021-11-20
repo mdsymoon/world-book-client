@@ -6,16 +6,12 @@ import AddBook from "./components/AddBook/AddBook";
 import { useEffect } from "react";
 import { addBooks } from "./redux/BookList/BookListSlice";
 import { useDispatch } from "react-redux";
+import { addWriter } from "./redux/Writer/WriterSlice";
 
 function App() {
-  const dispatch = useDispatch();
+  
 
-    useEffect(() => {
-        fetch('http://localhost:4000/bookList')
-        .then(res => res.json())
-        .then(data =>
-            dispatch(addBooks(data))
-    )})
+  
   return (
     <div className="App">
       <BrowserRouter>
