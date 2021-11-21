@@ -12,5 +12,6 @@ const userLoginSlice = createSlice({
     }
 })
 
-export default userLoginSlice.reducer
-export const {loggedInUser} = userLoginSlice.actions
+export const getLoggedInUser = (state) => state.logInStore.loginData;
+export const {loggedInUser} = userLoginSlice.actions;
+export default userLoginSlice.reducer;

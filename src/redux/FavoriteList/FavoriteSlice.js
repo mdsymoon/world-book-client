@@ -6,12 +6,11 @@ const favoriteSlice = createSlice({
     favoriteBook: [],
   },
   reducers: {
-    addFavorite: (state,  {payload} ) => {
+    addFavorite: (state, { payload }) => {
       state.favoriteBook.push(payload);
     },
   },
 });
 
-
 export default favoriteSlice.reducer;
-export const {addFavorite} = favoriteSlice.actions;
+export const { addFavorite } = favoriteSlice.actions;

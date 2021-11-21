@@ -7,6 +7,6 @@ export const store = configureStore({
   reducer: {
     bookListStore: bookListReducer,
     favoriteStore: favoriteReducer,
-    loginUser: loginReducer
+    logInStore: loginReducer
   },
 });

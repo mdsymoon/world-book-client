@@ -38,7 +38,6 @@ const DrawerContainer = () => {
                 </ListItemButton>
               </Link>
 
-              <ListItemButton>AddBook</ListItemButton>
             </List>
           </Collapse>
         </div>

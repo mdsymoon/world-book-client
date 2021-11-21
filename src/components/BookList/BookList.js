@@ -11,13 +11,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addBooks, getBookList } from "../../redux/BookList/BookListSlice";
 import { addFavorite } from "../../redux/FavoriteList/FavoriteSlice";
+import { getLoggedInUser } from "../../redux/UserLogin/UserLoginSlice";
 
 const BookList = () => {
   const dispatch = useDispatch();
+  const isLogged = useSelector(getLoggedInUser);
   const [searchTerm, setSearchTerm] = useState("");
   const bookList = useSelector(getBookList);
   const [menuItem, setMenuItem] = useState(bookList);
   const [buttons, setButtons] = useState([]);
+  console.log(isLogged)
 
   const filter = (button) => {
     if (button === "All") {
@@ -41,6 +44,10 @@ const BookList = () => {
         setMenuItem(data);
       });
   }, [dispatch]);
+
+  const handleClick = () => {
+     
+  }
 
   return (
     <main className="container mx-auto">
