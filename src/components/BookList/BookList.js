@@ -96,7 +96,7 @@ const BookList = () => {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small" onClick={() => dispatch(addFavorite(book))}>Add To Favorite</Button>
+                  <Button size="small" onClick={() => dispatch(addFavorite({name: book.name, price: book.price, writer:book.writer, img: book.img}))}>Add To Favorite</Button>
                 </CardActions>
               </Card>
             </div>
