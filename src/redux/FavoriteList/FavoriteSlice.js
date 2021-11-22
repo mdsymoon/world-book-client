@@ -14,3 +14,4 @@ const favoriteSlice = createSlice({
 
 export default favoriteSlice.reducer;
 export const { addFavorite } = favoriteSlice.actions;
+export const getFavItem = state => state.favoriteStore.favoriteBook;

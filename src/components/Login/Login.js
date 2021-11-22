@@ -3,14 +3,20 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import firebaseConfig from "./firebase.config";
 import firebase from "firebase/compat/app";
 import { useDispatch } from "react-redux";
-import { loggedInUser } from "../../redux/UserLogin/UserLoginSlice";
+import {
+  getLoggedInUser,
+  loggedInUser,
+} from "../../redux/UserLogin/UserLoginSlice";
 import { Container, Box, Avatar, Typography, Button } from "@mui/material";
 import { AiFillLock } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router";
 
 firebase.initializeApp(firebaseConfig);
 
 const Login = () => {
+  const isLogged = useSelector(getLoggedInUser);
   const dispatch = useDispatch();
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
@@ -23,10 +29,15 @@ const Login = () => {
         userImg: user.photoURL,
       };
       dispatch(loggedInUser(newUser));
+      
     });
   };
+
+  
+  
   return (
     <>
+    {isLogged.email && <Navigate to={-1}/>}
       <Container component="main" maxWidth="xs">
         <Box
           sx={{

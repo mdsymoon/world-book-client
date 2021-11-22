@@ -1,26 +1,29 @@
 import {
+  Alert,
   Button,
   Card,
   CardActions,
   CardContent,
   CardMedia,
+  Snackbar,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addBooks, getBookList } from "../../redux/BookList/BookListSlice";
 import { addFavorite } from "../../redux/FavoriteList/FavoriteSlice";
 import { getLoggedInUser } from "../../redux/UserLogin/UserLoginSlice";
 
-const BookList = () => {
+const BookList = ({ setFavDrawerOpen }) => {
   const dispatch = useDispatch();
   const isLogged = useSelector(getLoggedInUser);
   const [searchTerm, setSearchTerm] = useState("");
   const bookList = useSelector(getBookList);
   const [menuItem, setMenuItem] = useState(bookList);
   const [buttons, setButtons] = useState([]);
-  console.log(isLogged)
 
   const filter = (button) => {
     if (button === "All") {
@@ -31,23 +34,40 @@ const BookList = () => {
     setMenuItem(filteredData);
   };
 
-  useEffect(() => {
-    fetch("http://localhost:4000/bookList")
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch(addBooks(data));
-        const allWriter = [
-          "All",
-          ...new Set(data.map((item) => item.writer, "All")),
-        ];
-        setButtons(allWriter);
-        setMenuItem(data);
+  const fetchBookList = async () => {
+    const response = await axios
+      .get("http://localhost:4000/bookList")
+      .catch((err) => {
+        console.log("err", err);
       });
-  }, [dispatch]);
+    if (response !== undefined) {
+      dispatch(addBooks(response.data));
+      const allWriter = [
+        "All",
+        ...new Set(response.data.map((item) => item.writer, "All")),
+      ];
+      setButtons(allWriter);
+      setMenuItem(response.data);
+    }
+  };
 
-  const handleClick = () => {
-     
-  }
+  useEffect(() => {
+    fetchBookList();
+  }, []);
+
+  // useEffect(() => {
+  //   fetch("http://localhost:4000/bookList")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       dispatch(addBooks(data));
+  //       const allWriter = [
+  //         "All",
+  //         ...new Set(data.map((item) => item.writer, "All")),
+  //       ];
+  //       setButtons(allWriter);
+  //       setMenuItem(data);
+  //     });
+  // }, [dispatch]);
 
   return (
     <main className="container mx-auto">
@@ -103,12 +123,27 @@ const BookList = () => {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small" onClick={() => dispatch(addFavorite({name: book.name, price: book.price, writer:book.writer, img: book.img}))}>Add To Favorite</Button>
+                  {isLogged.email ? (
+                    <Button
+                      size="small"
+                      onClick={() =>
+                        [dispatch(addFavorite({name: book.name,writer: book.writer,price: book.price, img: book.img,}))
+                        , setFavDrawerOpen(true)]
+                      }
+                    >
+                      Add To Favorite
+                    </Button>
+                  ) : (
+                    <Button size="small">Add To Favorite</Button>
+                  )}
                 </CardActions>
               </Card>
             </div>
           ))}
       </div>
+      {/* <Snackbar open={alert} autoHideDuration={6000} >
+        <Alert severity="error">please log in</Alert>
+      </Snackbar> */}
     </main>
   );
 };

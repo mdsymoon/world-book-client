@@ -1,12 +1,22 @@
-import React from 'react';
-import BookList from '../BookList/BookList';
+import { Drawer } from "@mui/material";
+import React, { useState } from "react";
+import BookList from "../BookList/BookList";
+import FavoriteDrawer from "./../DrawerContainer/FavoriteDrawer";
 
 const Home = () => {
-    return (
-        <div>
-            <BookList/>
-        </div>
-    );
+  const [favDrawerOpen, setFavDrawerOpen] = useState(false);
+  return (
+    <div>
+      <BookList setFavDrawerOpen={setFavDrawerOpen} />
+      <Drawer
+        anchor="right"
+        open={favDrawerOpen}
+        onClose={() => setFavDrawerOpen(false)}
+      >
+        <FavoriteDrawer />
+      </Drawer>
+    </div>
+  );
 };
 
 export default Home;
