@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { drawerOpen } from "../../redux/FavDrawer/FavDrawerSlice";
 
 const AddBook = () => {
+  const dispatch = useDispatch();
   const [file, setFile] = useState(null);
   const {
     register,
@@ -32,6 +35,8 @@ const AddBook = () => {
       <h1 className="text-2xl md:text-3xl lg:text-4xl text-center my-10 font-bold">
         Add Book In Book List
       </h1>
+      <button className="text-8xl" onClick={() =>dispatch(drawerOpen(true))}>+</button><br/>
+      <button className="text-8xl" onClick={() =>dispatch(drawerOpen(false))}>-</button>
       <div className="flex justify-center">
         <form onSubmit={handleSubmit(onSubmit)}>
           <input

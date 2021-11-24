@@ -6,7 +6,6 @@ import {
   CardContent,
   CardMedia,
   Snackbar,
-  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -14,16 +13,16 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addBooks, getBookList } from "../../redux/BookList/BookListSlice";
-import { addFavorite } from "../../redux/FavoriteList/FavoriteSlice";
 import { getLoggedInUser } from "../../redux/UserLogin/UserLoginSlice";
 
 const BookList = ({ setFavDrawerOpen }) => {
   const dispatch = useDispatch();
   const isLogged = useSelector(getLoggedInUser);
-  const [searchTerm, setSearchTerm] = useState("");
   const bookList = useSelector(getBookList);
+  const [searchTerm, setSearchTerm] = useState("");
   const [menuItem, setMenuItem] = useState(bookList);
   const [buttons, setButtons] = useState([]);
+  const [alert, setAlert] = useState(false);
 
   const filter = (button) => {
     if (button === "All") {
@@ -55,19 +54,29 @@ const BookList = ({ setFavDrawerOpen }) => {
     fetchBookList();
   }, []);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:4000/bookList")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       dispatch(addBooks(data));
-  //       const allWriter = [
-  //         "All",
-  //         ...new Set(data.map((item) => item.writer, "All")),
-  //       ];
-  //       setButtons(allWriter);
-  //       setMenuItem(data);
-  //     });
-  // }, [dispatch]);
+  const handleCloseAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlert(false);
+  };
+
+  const handleFav = (book) => {
+    const favItem = {
+      name: book.name,
+      writer: book.writer,
+      price: book.price,
+      img: book.img,
+      email: isLogged.email,
+    };
+    fetch("http://localhost:4000/addToFav", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(favItem),
+    })
+      .then((res) => res.json())
+      .then((data) => {});
+  };
 
   return (
     <main className="container mx-auto">
@@ -94,7 +103,7 @@ const BookList = ({ setFavDrawerOpen }) => {
           </div>
         ))}
       </div>
-      <div className="container justify-items-center gap-6 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-10">
+      <div className="container  justify-items-center gap-6 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-10">
         {menuItem
           .filter((value) => {
             if (searchTerm === "") {
@@ -126,24 +135,35 @@ const BookList = ({ setFavDrawerOpen }) => {
                   {isLogged.email ? (
                     <Button
                       size="small"
-                      onClick={() =>
-                        [dispatch(addFavorite({name: book.name,writer: book.writer,price: book.price, img: book.img,}))
-                        , setFavDrawerOpen(true)]
-                      }
+                      onClick={() => {
+                        setFavDrawerOpen(true);
+                        handleFav(book);
+                      }}
                     >
                       Add To Favorite
                     </Button>
                   ) : (
-                    <Button size="small">Add To Favorite</Button>
+                    <Button size="small" onClick={() => setAlert(true)}>
+                      Add To Favorite
+                    </Button>
                   )}
                 </CardActions>
               </Card>
             </div>
           ))}
       </div>
-      {/* <Snackbar open={alert} autoHideDuration={6000} >
-        <Alert severity="error">please log in</Alert>
-      </Snackbar> */}
+      <div className="">
+        <Snackbar
+          open={alert}
+          autoHideDuration={3000}
+          onClose={handleCloseAlert}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert severity="error" onClose={handleCloseAlert}>
+            please log in
+          </Alert>
+        </Snackbar>
+      </div>
     </main>
   );
 };
