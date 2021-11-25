@@ -1,13 +1,13 @@
-import { Skeleton, Stack } from "@mui/material";
+import { CardContent, Skeleton, Stack } from "@mui/material";
 import React from "react";
 
 const SkeletonCard = () => {
   return (
-    <div>
+    <div className="mb-10">
       <Stack spacing={1}>
-        <Skeleton variant="text" />
-        <Skeleton variant="circular" width={40} height={40} />
-        <Skeleton variant="rectangular" width={210} height={118} />
+        <Skeleton variant="rectangular" width={250} height={158} />
+          <Skeleton variant="rectangular" width={250} height={20} />
+          <Skeleton className="ml-20 rounded-md" variant="rectangular" width={60} height={20} />
       </Stack>
     </div>
   );
