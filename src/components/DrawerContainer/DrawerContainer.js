@@ -39,6 +39,12 @@ const DrawerContainer = () => {
                   AddBook
                 </ListItemButton>
               </Link>
+              <Link to="/bookData">
+                <ListItemButton>
+                  <AiFillFolderAdd style={{ fontSize: 30, marginRight: 10 }} />
+                  Book Data
+                </ListItemButton>
+              </Link>
 
             </List>
           </Collapse>

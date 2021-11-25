@@ -14,7 +14,7 @@ const Home = () => {
         open={favDrawerOpen}
         onClose={() => setFavDrawerOpen(false)}
       >
-        <FavoriteDrawer />
+        <FavoriteDrawer setFavDrawerOpen={setFavDrawerOpen}/>
       </Drawer>
     </div>
   );
