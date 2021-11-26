@@ -77,7 +77,7 @@ const BookList = () => {
         img: book.img,
         email: isLogged.email,
       };
-      fetch("http://localhost:4000/addToFav", {
+      fetch("https://world-book-1.herokuapp.com/addToFav", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(favItem),
