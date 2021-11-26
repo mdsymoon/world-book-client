@@ -6,7 +6,7 @@ import { MdExpandMore } from "react-icons/md";
 import { MdExpandLess } from "react-icons/md";
 import { AiFillFolderAdd } from "react-icons/ai";
 
-const DrawerContainer = () => {
+const DrawerContainer = ({setLeftDrawerOpen}) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -16,7 +16,7 @@ const DrawerContainer = () => {
       </h3>
       <div className="mt-8 pl-5 border-t-4 ">
         <Link to="/">
-          <div className="flex mt-5 cursor-pointer">
+          <div className="flex mt-5 cursor-pointer" onClick={() => setLeftDrawerOpen(false)}>
             <FaHome style={{ fontSize: 30 }} />
             <p className="text-xl ml-2 font-semibold">Home</p>
           </div>
@@ -33,13 +33,13 @@ const DrawerContainer = () => {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List>
               <Link to="/addBook">
-                <ListItemButton>
+                <ListItemButton onClick={() => setLeftDrawerOpen(false)}>
                   <AiFillFolderAdd style={{ fontSize: 30, marginRight: 10 }} />
                   AddBook
                 </ListItemButton>
               </Link>
               <Link to="/bookData">
-                <ListItemButton>
+                <ListItemButton onClick={() => setLeftDrawerOpen(false)}>
                   <AiFillFolderAdd style={{ fontSize: 30, marginRight: 10 }} />
                   Book Data
                 </ListItemButton>

@@ -20,7 +20,7 @@ const Header = () => {
         open={leftDrawerOpen}
         onClose={() => setLeftDrawerOpen(false)}
       >
-        <DrawerContainer />
+        <DrawerContainer setLeftDrawerOpen={setLeftDrawerOpen}/>
       </Drawer>
       <Drawer
         anchor="right"
