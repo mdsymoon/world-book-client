@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const favoriteSlice = createSlice({
   name: "writer",
   initialState: {
-    favoriteBook: {},
+    favoriteBook: [],
   },
   reducers: {
     addFavorite: (state, { payload }) => {
-      state.favoriteBook = payload;
+      state.favoriteBook = payload
     },
   },
 });

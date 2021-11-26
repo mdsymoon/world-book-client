@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addBooks, getBookList } from "../../redux/BookList/BookListSlice";
 import { setDrawerOpen } from "../../redux/Drawer/DrawerSlice";
+import { getFavItem } from "../../redux/FavoriteList/FavoriteSlice";
 import { getLoggedInUser } from "../../redux/UserLogin/UserLoginSlice";
 import SkeletonCard from "../SkeletonCard/SkeletonCard";
 
@@ -21,6 +22,7 @@ const BookList = () => {
   const dispatch = useDispatch();
   const isLogged = useSelector(getLoggedInUser);
   const bookList = useSelector(getBookList);
+  const favBook = useSelector(getFavItem);
   const [searchTerm, setSearchTerm] = useState("");
   const [menuItem, setMenuItem] = useState(bookList);
   const [buttons, setButtons] = useState([]);
@@ -66,20 +68,27 @@ const BookList = () => {
   };
 
   const handleFav = (book) => {
-    const favItem = {
-      name: book.name,
-      writer: book.writer,
-      price: book.price,
-      img: book.img,
-      email: isLogged.email,
-    };
-    fetch("https://world-book-1.herokuapp.com/addToFav", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(favItem),
-    })
-      .then((res) => res.json())
-      .then((data) => {});
+    const isExit = favBook.filter((item) => item.name === book.name);
+    if (isExit.length === 0) {
+      const favItem = {
+        name: book.name,
+        writer: book.writer,
+        price: book.price,
+        img: book.img,
+        email: isLogged.email,
+      };
+      fetch("http://localhost:4000/addToFav", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(favItem),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          dispatch(setDrawerOpen());
+        });
+    } else {
+      setAlert(true);
+    }
   };
 
   return (
@@ -141,10 +150,7 @@ const BookList = () => {
                       {isLogged.email ? (
                         <button
                           className="bg-gray-500 text-white font-semibold px-3 py-1 mr-5 rounded-lg flex hover:bg-gray-600 transition duration-500"
-                          onClick={() => {
-                            dispatch(setDrawerOpen());
-                            handleFav(book);
-                          }}
+                          onClick={() => handleFav(book)}
                         >
                           Add To Favorite
                         </button>
@@ -168,13 +174,22 @@ const BookList = () => {
               onClose={handleCloseAlert}
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
-              <Alert
+              {isLogged.email?  <Alert
                 variant="filled"
                 severity="error"
                 onClose={handleCloseAlert}
               >
-                please log in
-              </Alert>
+                This Book Already Added!
+              </Alert>:
+               <Alert
+               variant="filled"
+               severity="error"
+               onClose={handleCloseAlert}
+             >
+               please log in
+             </Alert>
+              }
+             
             </Snackbar>
           </div>
         </div>

@@ -18,10 +18,13 @@
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.19.5",
     "react-icons": "^4.3.1",
+    "react-intersection-observer": "^8.32.5",
+    "react-particles-js": "^3.6.0",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
     "styled-components": "^5.3.3",
+    "tsparticles": "^1.37.4",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

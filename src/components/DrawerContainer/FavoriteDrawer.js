@@ -5,6 +5,7 @@ import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { GrClose } from "react-icons/gr";
 import FavSkeletonCard from "../SkeletonCard/FavSkeletonCard";
 import { setDrawerOpen } from "../../redux/Drawer/DrawerSlice";
+import { addFavorite } from "../../redux/FavoriteList/FavoriteSlice";
 
 const FavoriteDrawer = () => {
   const [favList, setFavList] = useState([]);
@@ -21,6 +22,7 @@ const FavoriteDrawer = () => {
       .then((res) => res.json())
       .then((data) => {
         setFavList(data);
+        dispatch(addFavorite(data))
         setDataLoad(false);
       });
   });
