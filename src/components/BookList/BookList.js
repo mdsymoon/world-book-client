@@ -13,10 +13,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addBooks, getBookList } from "../../redux/BookList/BookListSlice";
+import { setDrawerOpen } from "../../redux/Drawer/DrawerSlice";
 import { getLoggedInUser } from "../../redux/UserLogin/UserLoginSlice";
 import SkeletonCard from "../SkeletonCard/SkeletonCard";
 
-const BookList = ({ setFavDrawerOpen }) => {
+const BookList = () => {
   const dispatch = useDispatch();
   const isLogged = useSelector(getLoggedInUser);
   const bookList = useSelector(getBookList);
@@ -25,8 +26,7 @@ const BookList = ({ setFavDrawerOpen }) => {
   const [buttons, setButtons] = useState([]);
   const [alert, setAlert] = useState(false);
   const [dataLoad, setDataLoad] = useState(true);
-  const [buttonLoad, setButtonLoad] = useState(true);
-  console.log(buttonLoad);
+
   const filter = (button) => {
     if (button === "All") {
       setMenuItem(bookList);
@@ -38,7 +38,7 @@ const BookList = ({ setFavDrawerOpen }) => {
 
   const fetchBookList = async () => {
     const response = await axios
-      .get("http://localhost:4000/bookList")
+      .get("https://world-book-1.herokuapp.com/bookList")
       .catch((err) => {
         console.log("err", err);
       });
@@ -51,7 +51,6 @@ const BookList = ({ setFavDrawerOpen }) => {
       setButtons(allWriter);
       setMenuItem(response.data);
       setDataLoad(false);
-      setButtonLoad(false);
     }
   };
 
@@ -74,7 +73,7 @@ const BookList = ({ setFavDrawerOpen }) => {
       img: book.img,
       email: isLogged.email,
     };
-    fetch("http://localhost:4000/addToFav", {
+    fetch("https://world-book-1.herokuapp.com/addToFav", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(favItem),
@@ -143,7 +142,7 @@ const BookList = ({ setFavDrawerOpen }) => {
                         <button
                           className="bg-gray-500 text-white font-semibold px-3 py-1 mr-5 rounded-lg flex hover:bg-gray-600 transition duration-500"
                           onClick={() => {
-                            setFavDrawerOpen(true);
+                            dispatch(setDrawerOpen());
                             handleFav(book);
                           }}
                         >

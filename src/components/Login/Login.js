@@ -29,15 +29,12 @@ const Login = () => {
         userImg: user.photoURL,
       };
       dispatch(loggedInUser(newUser));
-      
     });
   };
 
-  
-  
   return (
     <>
-    {isLogged.email && <Navigate to={-1}/>}
+      {isLogged.email && <Navigate to={-1} />}
       <Container component="main" maxWidth="xs">
         <Box
           sx={{

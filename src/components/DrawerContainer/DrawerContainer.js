@@ -8,10 +8,9 @@ import { AiFillFolderAdd } from "react-icons/ai";
 
 const DrawerContainer = () => {
   const [open, setOpen] = useState(false);
- 
-  
+
   return (
-    <main style={{ minWidth: 200 }}>
+    <main style={{ minWidth: 300 }}>
       <h3 className="text-2xl text-center font-semibold mt-3 px-5 ">
         World Book
       </h3>
@@ -45,7 +44,6 @@ const DrawerContainer = () => {
                   Book Data
                 </ListItemButton>
               </Link>
-
             </List>
           </Collapse>
         </div>

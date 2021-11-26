@@ -17,7 +17,7 @@ const AddBook = () => {
     formData.append("price", data.price);
     formData.append("writer", data.writer);
 
-    fetch(`http://localhost:4000/addBook`, {
+    fetch(`https://world-book-1.herokuapp.com/addBook`, {
       method: "POST",
       body: formData,
     })
@@ -67,7 +67,6 @@ const AddBook = () => {
           <br />
           {errors.img && <span>Book image is required</span>}
           <br />
-
           <button
             type="submit"
             className="rounded  hover:bg-indigo-600 focus:ring focus:ring-offset-2 focus:ring-indigo-600 px-5 py-1 font-bold mt-3 bg-indigo-500 text-white"

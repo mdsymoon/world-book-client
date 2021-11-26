@@ -43,19 +43,19 @@ const BookData = () => {
               <TableCell align="left" onClick={() => sorting("name")}>
                 <div className="flex">
                   Name
-                  <FcAlphabeticalSortingAz className="text-2xl ml-2 cursor-pointer"/>
+                  <FcAlphabeticalSortingAz className="text-2xl ml-2 cursor-pointer" />
                 </div>
               </TableCell>
               <TableCell align="left" onClick={() => sorting("writer")}>
                 <div className="flex">
                   Writer
-                  <FcAlphabeticalSortingAz className="text-2xl ml-2 cursor-pointer"/>
+                  <FcAlphabeticalSortingAz className="text-2xl ml-2 cursor-pointer" />
                 </div>
               </TableCell>
               <TableCell align="left" onClick={() => sorting("price")}>
                 <div className="flex">
                   Price
-                  <FcNumericalSorting12 className="text-2xl ml-2 cursor-pointer"/>
+                  <FcNumericalSorting12 className="text-2xl ml-2 cursor-pointer" />
                 </div>
               </TableCell>
             </TableRow>
