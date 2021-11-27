@@ -7,5 +7,5 @@ World Book is a book website where anyone can get their favorite book. On the ho
 - Authentication system by firebase
 - Search any book by book name 
 - Dynamic Button for find specific writer books
-- User can added any book in favorite drawer and remove
-- Book Data table sorted by book name, writer name and price 
+- Users can add any book in favorite drawer and remove
+- Book Data table sorted by book name, writer name, and price 
